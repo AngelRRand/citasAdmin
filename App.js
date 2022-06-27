@@ -1,20 +1,47 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Fragment } from 'react';
+import {
+  Button,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
 
 export default function App() {
+
+
+
+
+
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>The Appointment Manager {''}
+        <Text style={styles.veterinary}>Veterinary</Text>
+      </Text>
+
+      <Button
+        title='New'
+        onPress={ ()=>console.log('Presionaste el botom') }
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#edf798',
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
+  title: {
+    color: '#80d6ff',
+    textAlign: 'center',
+    fontSize: 32,
+    fontWeight: '600',
+  },
+  veterinary: {
+    fontWeight: '900',
+    color: '#f06868'
+  }
+
 });
