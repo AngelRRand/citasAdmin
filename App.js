@@ -1,17 +1,22 @@
-import React, { Fragment } from 'react';
+import React, { useState } from 'react';
 import {
-  Button,
   SafeAreaView,
   StyleSheet,
   Text,
-  View
+  Pressable,
 } from 'react-native';
+import Form from './src/component/Form';
 
 export default function App() {
 
+  const [modal, setModal] = useState(false)
 
-
-
+  const newAppointHandler = () => {
+    setModal(true)
+  }
+  const modalHandler = () => {
+    setModal(false)
+  }
 
 
   return (
@@ -20,17 +25,21 @@ export default function App() {
         <Text style={styles.veterinary}>Veterinary</Text>
       </Text>
 
-      <Button
-        title='New'
-        onPress={ ()=>console.log('Presionaste el botom') }
-      />
+      <Pressable
+        style={styles.btnNewApp}
+        onPress={newAppointHandler}
+      >
+        <Text style={styles.btnText}>new date </Text>
+      </Pressable>
+
+
+      <Form modal={modal} modalHandler={modalHandler}/>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#edf798',
     flex: 1,
   },
   title: {
@@ -42,6 +51,22 @@ const styles = StyleSheet.create({
   veterinary: {
     fontWeight: '900',
     color: '#f06868'
+  },
+  btnNewApp: {
+    backgroundColor: '#f06868',
+    padding: 15,
+    marginTop: 20,
+    marginHorizontal: 30,
+  },
+  btnText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 20,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+  },
+  modals:{
+    backgroundColor:'red',
   }
 
 });
