@@ -27,7 +27,7 @@ const Error = ({error, setError}) => {
 const styles = StyleSheet.create({
     modalErrorCont:{
         flex: 1,
-        backgroundColor:'#f06868',
+        backgroundColor:'#525558',
         justifyContent: 'center',
         
     },
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     modalErrorBtn:{
         marginHorizontal:20,
         marginTop:20,
-        backgroundColor: '#80d6ff',
+        backgroundColor: '#75c7ff',
         padding: 15,
         textAlign: 'center',
     },

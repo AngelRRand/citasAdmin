@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal, StyleSheet, Pressable, Text, SafeAreaView, View, TextInput, ScrollView } from 'react-native'
 import Error from './Error'
-const Form = ({ modal, modalHandler }) => {
+const Form = ({ modal, modalHandler, pets, setPets, pet }) => {
 
     
     const [patient, setPatient] = useState('')
+    const [id, setId] = useState('')
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
@@ -12,6 +13,19 @@ const Form = ({ modal, modalHandler }) => {
 
 
     const [error, setError] = useState(false)
+    console.log(pet)
+
+    useEffect(()=>{
+        if(Object.keys(pet).length > 0){
+            setId(pet.id)
+            setPatient(pet.patient)
+            setName(pet.name)
+            setEmail(pet.email)
+            setPhone(pet.phone)
+            setSymptom(pet.symptom)
+        } 
+    }, [])
+
     const submitHandle =()=>{
         if([patient, name, email, phone, symptom].includes('')){
            setError(true)
@@ -19,13 +33,20 @@ const Form = ({ modal, modalHandler }) => {
         }else{
 
             const newPet = {
+                id: Date.now(),
                 patient,
                 name, 
                 email,
                 phone, 
                 symptom
             }
-            console.log(newPet)
+            setPets([...pets, newPet])
+            modalHandler()
+            setPatient('')
+            setName('')
+            setEmail('')
+            setPhone('')
+            setSymptom('')
         }
     }
 
@@ -178,7 +199,7 @@ const styles = StyleSheet.create({
         height: 100,
     },
     btnCommit:{
-        backgroundColor:'#f06868',
+        backgroundColor:'#75c7ff',
         marginTop:20,
         marginHorizontal:30,
         marginBottom:10,
