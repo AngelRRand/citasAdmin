@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, StyleSheet, Pressable, Text, SafeAreaView, View, TextInput, ScrollView } from 'react-native'
 import Error from './Error'
-const Form = ({ modal, modalHandler, pets, setPets, pet }) => {
+const Form = ({ modal, modalHandler, pets, setPets, pet, setPet }) => {
 
-    
-    const [patient, setPatient] = useState('')
+
     const [id, setId] = useState('')
+    const [patient, setPatient] = useState('')
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
@@ -13,41 +13,55 @@ const Form = ({ modal, modalHandler, pets, setPets, pet }) => {
 
 
     const [error, setError] = useState(false)
-    console.log(pet)
 
-    useEffect(()=>{
-        if(Object.keys(pet).length > 0){
+    useEffect(() => {
+        if (Object.keys(pet).length > 0) {
+
             setId(pet.id)
             setPatient(pet.patient)
             setName(pet.name)
             setEmail(pet.email)
             setPhone(pet.phone)
             setSymptom(pet.symptom)
-        } 
-    }, [])
-
-    const submitHandle =()=>{
-        if([patient, name, email, phone, symptom].includes('')){
-           setError(true)
-           return
-        }else{
-
-            const newPet = {
-                id: Date.now(),
-                patient,
-                name, 
-                email,
-                phone, 
-                symptom
-            }
-            setPets([...pets, newPet])
-            modalHandler()
-            setPatient('')
-            setName('')
-            setEmail('')
-            setPhone('')
-            setSymptom('')
         }
+        console.log('desdeEffect')
+    }, [pet])
+
+    const submitHandle = () => {
+        if ([patient, name, email, phone, symptom].includes('')) {
+            setError(true)
+            return
+        }
+
+        const newPet = {
+            patient,
+            name,
+            email,
+            phone,
+            symptom
+        }
+        if (id) {
+            //Editar
+            newPet.id = id
+            const petUpdate = pets.map(statePet =>
+                statePet.id === newPet.id ? newPet : statePet
+            )
+
+            console.log(petUpdate)
+            setPets(petUpdate)
+            setPet({})
+        } else {
+            newPet.id = Date.now()
+            setPets([...pets, newPet])
+        }
+        modalHandler()
+        setId('')
+        setPatient('')
+        setName('')
+        setEmail('')
+        setPhone('')
+        setSymptom('')
+
     }
 
     return (
@@ -60,92 +74,107 @@ const Form = ({ modal, modalHandler, pets, setPets, pet }) => {
                 <ScrollView>
 
                     <View style={styles.modalHud}>
-                        <Text style={styles.modalTitle}>New date
+                        <Text style={styles.modalTitle}>
+                            {
+                                !id ? 'New Date' : 'Update'
+                            }
                         </Text>
                         <Pressable
                             style={styles.btnModal}
-                            onPress={modalHandler}
-                        >
-                            <Text style={styles.btonModalText}>X</Text>
-                        </Pressable>
-
-                    </View>
-
-                    <View style={styles.camp}>
-                        <Text style={styles.label}>Name of patient</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder='Name'
-                            placeholderTextColor={'#656'}
-                            value={patient}
-                            onChangeText={setPatient}
-                        />
-                    </View>
-
-                    <View style={styles.camp}>
-                        <Text style={styles.label}>Owner name</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder='Owner'
-                            placeholderTextColor={'#656'}
-                            value={name}
-                            onChangeText={setName}
-                        />
-                    </View>
-
-                    <View style={styles.camp}>
-                        <Text style={styles.label}>Owner email</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder='Email'
-                            placeholderTextColor={'#656'}
-                            value={email}
-                            onChangeText={setEmail}
-                        />
-                    </View>
-
-                    <View style={styles.camp}>
-                        <Text style={styles.label}>Owner phone</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder='Phone'
-                            placeholderTextColor={'#656'}
-                            keyboardType='number-pad'
-                            value={phone}
-                            onChangeText={setPhone}
-                            maxLength={12}
-                        />
-                    </View>
-
-
-                    <View style={styles.camp}>
-                        <Text style={styles.label}>Symptom</Text>
-                        <TextInput
-                            style={[styles.input, styles.sym]}
-                            placeholder='Symptom'
-                            placeholderTextColor={'#656'}
-                            value={symptom}
-                            multiline={true}
-                            numberOfLines={5}
-                            onChangeText={setSymptom}
-                        />
-                    </View>
-
-                    <Pressable
-                        style={styles.btnCommit}
-                        onPress={submitHandle}
-                    >
-                        <Text style={styles.btnTextCommit}>Date</Text>
+                            onPress={() =>{
+                                modalHandler()
+                                setPet({})
+                                setId('')
+                                setPatient('')
+                                setName('')
+                                setEmail('')
+                                setPhone('')
+                                setSymptom('')}
+                            }>
+                        <Text style={styles.btonModalText}>X</Text>
                     </Pressable>
+
+                </View>
+
+                <View style={styles.camp}>
+                    <Text style={styles.label}>Name of patient</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Name'
+                        placeholderTextColor={'#656'}
+                        value={patient}
+                        onChangeText={setPatient}
+                    />
+                </View>
+
+                <View style={styles.camp}>
+                    <Text style={styles.label}>Owner name</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Owner'
+                        placeholderTextColor={'#656'}
+                        value={name}
+                        onChangeText={setName}
+                    />
+                </View>
+
+                <View style={styles.camp}>
+                    <Text style={styles.label}>Owner email</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Email'
+                        placeholderTextColor={'#656'}
+                        value={email}
+                        onChangeText={setEmail}
+                    />
+                </View>
+
+                <View style={styles.camp}>
+                    <Text style={styles.label}>Owner phone</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Phone'
+                        placeholderTextColor={'#656'}
+                        keyboardType='number-pad'
+                        value={phone}
+                        onChangeText={setPhone}
+                        maxLength={12}
+                    />
+                </View>
+
+
+                <View style={styles.camp}>
+                    <Text style={styles.label}>Symptom</Text>
+                    <TextInput
+                        style={[styles.input, styles.sym]}
+                        placeholder='Symptom'
+                        placeholderTextColor={'#656'}
+                        value={symptom}
+                        multiline={true}
+                        numberOfLines={5}
+                        onChangeText={setSymptom}
+                    />
+                </View>
+
+                <Pressable
+                    style={styles.btnCommit}
+                    onPress={submitHandle}
+                >
+                    <Text style={styles.btnTextCommit}>
+                        {
+                            !id ? 'Date' : 'Update'
+                        }
+                    </Text>
+                </Pressable>
 
                 <Error error={error} setError={setError}></Error>
 
-                </ScrollView>
-            </SafeAreaView>
+            </ScrollView>
+        </SafeAreaView>
 
 
 
-        </Modal>
+        </Modal >
     )
 }
 
@@ -198,20 +227,20 @@ const styles = StyleSheet.create({
     sym: {
         height: 100,
     },
-    btnCommit:{
-        backgroundColor:'#75c7ff',
-        marginTop:20,
-        marginHorizontal:30,
-        marginBottom:10,
+    btnCommit: {
+        backgroundColor: '#75c7ff',
+        marginTop: 20,
+        marginHorizontal: 30,
+        marginBottom: 10,
         padding: 15,
 
     },
-    btnTextCommit:{
-        textAlign:'center',
+    btnTextCommit: {
+        textAlign: 'center',
         color: 'white',
-        textTransform:'uppercase',
-        fontWeight:'800',
-        fontSize:30
+        textTransform: 'uppercase',
+        fontWeight: '800',
+        fontSize: 30
     }
 });
 

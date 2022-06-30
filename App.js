@@ -74,6 +74,7 @@ export default function App() {
         pets={pets}
         setPets={setPets}
         pet={pet}
+        setPet={setPet}
       />
 
     </SafeAreaView>
