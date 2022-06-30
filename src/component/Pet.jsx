@@ -3,14 +3,26 @@ import { Text, View, StyleSheet, Pressable } from 'react-native'
 
 
 
-const Pet = ({ item, setModal, parentEdit }) => {
+const Pet = ({ item, setModal, parentEdit, parentDelet, setModalPet, setPet }) => {
 
 
     const { patient, phone, id } = item
     return (
+        
         <View style={styles.petContainer}>
+
+            
             <Text style={styles.petPatientName}>Patient: </Text>
+            <Pressable 
+            onLongPress={()=>{
+                setModalPet(id)
+                setPet(item)}
+            }       
+            >
             <Text style={styles.petPatient}>{patient}</Text>
+            </Pressable>
+
+
             <View style={styles.petText}>
                 <Text style={styles.petPhone}>Tel: {phone}</Text>
             </View>
@@ -25,7 +37,13 @@ const Pet = ({ item, setModal, parentEdit }) => {
                     <Text style={styles.text}>Edit</Text>
                 </Pressable>
 
-                <Pressable style={[styles.btn, styles.delet]}>
+                <Pressable 
+                style={[styles.btn, styles.delet]}
+                onPress={()=>{
+                    console.log('holamundosoyeldelete')
+                    parentDelet(id)
+                }}
+                >
                     <Text style={styles.text}>Delete</Text>
                 </Pressable>
             </View>

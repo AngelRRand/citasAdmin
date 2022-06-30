@@ -4,9 +4,12 @@ import {
   StyleSheet,
   Text,
   Pressable,
-  FlatList
+  FlatList,
+  Alert,
+  Modal
 } from 'react-native';
 import { View } from 'react-native-web';
+import { DetailPet } from './src/component/DetailPet';
 import Form from './src/component/Form';
 import Pet from './src/component/Pet';
 
@@ -15,13 +18,32 @@ export default function App() {
   const [modal, setModal] = useState(false)
   const [pets, setPets] = useState([])
   const [pet, setPet] = useState({})
+  const [modalPet, setModalPet] = useState(false)
 
 
-  
   const parentEdit = id => {
     const parentEdits = pets.filter(p => p.id === id)
     setPet(parentEdits[0])
   }
+  const parentDelet = id => {
+    console.log('se activo la funcion en App, el id es:',id)
+    Alert.alert(
+      'Do you want to delete this patient?',
+      [
+        { text: 'Cancel' },
+        {
+          text: 'Yes, I want to delete', onPress: () => {
+            const parentUbdate = pets.filter(
+              p => p.id !== id
+            )
+            setPets(parentUbdate)
+          }
+        }
+      ]
+    )
+  }
+
+
 
   const newAppointHandler = () => {
     setModal(true)
@@ -51,22 +73,25 @@ export default function App() {
         <View>
           <Text style={styles.truePatiens}>There are patients!</Text>
           <FlatList
-          style={styles.FlatListPets}
+            style={styles.FlatListPets}
             data={pets}
-            keyExtractor={(item)=>item.id}
-            renderItem={({item})=>{
-              return(
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              return (
                 <Pet
                   item={item}
                   setModal={setModal}
                   parentEdit={parentEdit}
+                  parentDelet={parentDelet}
+                  setModalPet={setModalPet}
+                  setPet={setPet}
                 />
               )
             }}
           />
 
         </View>
-        }
+      }
 
       <Form
         modal={modal}
@@ -77,6 +102,16 @@ export default function App() {
         setPet={setPet}
       />
 
+      <Modal
+        visible={modalPet}
+        animationType='fade'
+      >
+        <DetailPet
+          pet={pet}
+          setModalPet={setModalPet}
+        />
+
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -113,23 +148,23 @@ const styles = StyleSheet.create({
   modals: {
     backgroundColor: 'red',
   },
-  notPatiens:{
-    marginTop:40,
-    textAlign:'center',
-    fontSize:24,
-    fontWeight:'700',
+  notPatiens: {
+    marginTop: 40,
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: '700',
     color: '#759eff'
   },
-  truePatiens:{
-    marginTop:40,
-    textAlign:'center',
-    fontSize:24,
-    fontWeight:'700',
+  truePatiens: {
+    marginTop: 40,
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: '700',
     color: '#759eff'
   },
-  FlatListPets:{
-    marginTop:60,
-    marginHorizontal:30,
+  FlatListPets: {
+    marginTop: 60,
+    marginHorizontal: 30,
   }
 
 });
