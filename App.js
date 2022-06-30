@@ -6,9 +6,9 @@ import {
   Pressable,
   FlatList,
   Alert,
-  Modal
+  Modal,
+  View
 } from 'react-native';
-import { View } from 'react-native-web';
 import { DetailPet } from './src/component/DetailPet';
 import Form from './src/component/Form';
 import Pet from './src/component/Pet';
@@ -25,18 +25,18 @@ export default function App() {
     const parentEdits = pets.filter(p => p.id === id)
     setPet(parentEdits[0])
   }
+
+
   const parentDelet = id => {
-    console.log('se activo la funcion en App, el id es:',id)
     Alert.alert(
-      'Do you want to delete this patient?',
+      "Do you want to delete this patient?",
+      "The patient is lost forever..",
       [
-        { text: 'Cancel' },
+        { text: "Cancel" },
         {
           text: 'Yes, I want to delete', onPress: () => {
-            const parentUbdate = pets.filter(
-              p => p.id !== id
-            )
-            setPets(parentUbdate)
+            const parentUpdate = pets.filter(p => p.id !== id)
+            setPets(parentUpdate)
           }
         }
       ]
@@ -51,7 +51,7 @@ export default function App() {
   const modalHandler = () => {
     setModal(false)
   }
-
+  console.log(modal)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -62,7 +62,7 @@ export default function App() {
 
       <Pressable
         style={styles.btnNewApp}
-        onPress={newAppointHandler}
+        onPress={() => newAppointHandler()}
       >
         <Text style={styles.btnText}>new date </Text>
       </Pressable>
@@ -79,6 +79,7 @@ export default function App() {
             renderItem={({ item }) => {
               return (
                 <Pet
+                
                   item={item}
                   setModal={setModal}
                   parentEdit={parentEdit}
@@ -92,15 +93,14 @@ export default function App() {
 
         </View>
       }
-
-      <Form
-        modal={modal}
-        modalHandler={modalHandler}
-        pets={pets}
-        setPets={setPets}
-        pet={pet}
-        setPet={setPet}
-      />
+        <Form
+          modal={modal}
+          modalHandler={modalHandler}
+          pets={pets}
+          setPets={setPets}
+          pet={pet}
+          setPet={setPet}
+        />
 
       <Modal
         visible={modalPet}
@@ -119,7 +119,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#525558'
+    backgroundColor: '#e8ecee'
   },
   title: {
     paddingTop: 30,

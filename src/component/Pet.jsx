@@ -8,18 +8,19 @@ const Pet = ({ item, setModal, parentEdit, parentDelet, setModalPet, setPet }) =
 
     const { patient, phone, id } = item
     return (
-        
+
         <View style={styles.petContainer}>
 
-            
+
             <Text style={styles.petPatientName}>Patient: </Text>
-            <Pressable 
-            onLongPress={()=>{
-                setModalPet(id)
-                setPet(item)}
-            }       
+            <Pressable
+                onLongPress={() => {
+                    setModalPet(true)
+                    setPet(item)
+                }
+                }
             >
-            <Text style={styles.petPatient}>{patient}</Text>
+                <Text style={styles.petPatient}>{patient}</Text>
             </Pressable>
 
 
@@ -28,21 +29,20 @@ const Pet = ({ item, setModal, parentEdit, parentDelet, setModalPet, setPet }) =
             </View>
             <View style={styles.petBtnContainer}>
                 <Pressable
-                 style={[styles.btn, styles.edit]}
-                 onLongPress={()=> {
-                    setModal(true)
-                    parentEdit(id)
-                }}
-                 >
+                    style={[styles.btn, styles.edit]}
+                    onLongPress={() => {
+                        setModal(true)
+                        parentEdit(id)
+                    }}
+                >
                     <Text style={styles.text}>Edit</Text>
                 </Pressable>
 
-                <Pressable 
-                style={[styles.btn, styles.delet]}
-                onPress={()=>{
-                    console.log('holamundosoyeldelete')
-                    parentDelet(id)
-                }}
+                <Pressable
+                    style={[styles.btn, styles.delet]}
+                    onPress={() => {
+                        parentDelet(id)
+                    }}
                 >
                     <Text style={styles.text}>Delete</Text>
                 </Pressable>
@@ -56,16 +56,22 @@ const styles = StyleSheet.create({
         padding: 15,
         justifyContent: 'center',
         marginTop: 10,
-        backgroundColor: '#35373a',
-        borderBottomColor:'#456d80',
-        borderBottomWidth:2,
+        backgroundColor: '#182333',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        elevation: 4,
     },
-    petPatientName:{
+    petPatientName: {
         color: 'white',
         fontSize: 15,
         fontWeight: '500',
-        marginTop:10,
-        marginBottom:15,
+        marginTop: 10,
+        marginBottom: 15,
     },
     petPatient: {
         fontSize: 25,
@@ -73,34 +79,34 @@ const styles = StyleSheet.create({
         color: '#75c7ff',
         marginBottom: 10,
     },
-    petPhone:{
+    petPhone: {
         color: 'white',
-        fontSize:15,
+        fontSize: 15,
     },
-    petBtnContainer:{
+    petBtnContainer: {
         flexDirection: 'row',
-        justifyContent:'space-between',
-        marginTop:10,
-       
+        justifyContent: 'space-between',
+        marginTop: 10,
+
     },
-    btn:{   
-        paddingVertical:5,
-        paddingHorizontal:20,
-        borderRadius:5,
-        borderBottomColor:'#75c7ff',
-        borderBottomWidth:1
+    btn: {
+        paddingVertical: 5,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        borderBottomColor: '#75c7ff',
+        borderBottomWidth: 1
     },
-    text:{
-        textTransform:'uppercase',
+    text: {
+        textTransform: 'uppercase',
         fontSize: 15,
         fontWeight: '800',
         color: 'white',
     },
-    edit:{  
-        backgroundColor:'#759eff'
+    edit: {
+        backgroundColor: '#759eff'
     },
-    delet:{
-        backgroundColor:'#314853'
+    delet: {
+        backgroundColor: '#314853'
     },
 })
 export default Pet
