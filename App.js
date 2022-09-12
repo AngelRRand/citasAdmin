@@ -12,6 +12,7 @@ import {
 import { DetailPet } from './src/component/DetailPet';
 import Form from './src/component/Form';
 import Pet from './src/component/Pet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
 
