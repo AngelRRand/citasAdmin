@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -20,7 +20,29 @@ export default function App() {
   const [pets, setPets] = useState([])
   const [pet, setPet] = useState({})
   const [modalPet, setModalPet] = useState(false)
+  console.log(pets)
 
+  useEffect(() => {
+    const loadPets = async () => {
+      try {
+        const petsStorage = await AsyncStorage.getItem('pets')
+        if (petsStorage) {
+          setPets(JSON.stringify(petsStorage))
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    loadPets()
+  }, []); 
+
+  const savePets = async(newPet)=>{
+    try {
+        await AsyncStorage.setItem('pets', newPet)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
   const parentEdit = id => {
     const parentEdits = pets.filter(p => p.id === id)
@@ -38,6 +60,7 @@ export default function App() {
           text: 'Yes, I want to delete', onPress: () => {
             const parentUpdate = pets.filter(p => p.id !== id)
             setPets(parentUpdate)
+            savePets(JSON.stringify(parentUpdate))
           }
         }
       ]
@@ -68,9 +91,7 @@ export default function App() {
         <Text style={styles.btnText}>new date </Text>
       </Pressable>
 
-      {pets.length === 0 ?
-        <Text style={styles.notPatiens}>There are no patients...</Text>
-        :
+      {pets ?
         <View>
           <Text style={styles.truePatiens}>There are patients!</Text>
           <FlatList
@@ -80,7 +101,7 @@ export default function App() {
             renderItem={({ item }) => {
               return (
                 <Pet
-                
+
                   item={item}
                   setModal={setModal}
                   parentEdit={parentEdit}
@@ -93,15 +114,19 @@ export default function App() {
           />
 
         </View>
+        :
+        
+        <Text style={styles.notPatiens}>There are no patients...</Text>
       }
-        <Form
-          modal={modal}
-          modalHandler={modalHandler}
-          pets={pets}
-          setPets={setPets}
-          pet={pet}
-          setPet={setPet}
-        />
+      <Form
+        modal={modal}
+        modalHandler={modalHandler}
+        pets={pets}
+        setPets={setPets}
+        pet={pet}
+        setPet={setPet}
+        savePets={savePets}
+      />
 
       <Modal
         visible={modalPet}

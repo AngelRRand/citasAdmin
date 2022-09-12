@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, StyleSheet, Pressable, Text, SafeAreaView, View, TextInput, ScrollView } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Error from './Error'
-const Form = ({ modal, modalHandler, pets, setPets, pet, setPet }) => {
+const Form = ({ modal, modalHandler, pets, setPets, pet, setPet, savePets }) => {
 
 
     const [id, setId] = useState('')
@@ -24,9 +25,10 @@ const Form = ({ modal, modalHandler, pets, setPets, pet, setPet }) => {
             setPhone(pet.phone)
             setSymptom(pet.symptom)
         }
-        console.log('desdeEffect')
+        //console.log('desdeEffect')
     }, [pet])
 
+    
     const submitHandle = () => {
         if ([patient, name, email, phone, symptom].includes('')) {
             setError(true)
@@ -53,6 +55,7 @@ const Form = ({ modal, modalHandler, pets, setPets, pet, setPet }) => {
         } else {
             newPet.id = Date.now()
             setPets([...pets, newPet])
+            savePets(JSON.stringify(pets))
         }
         modalHandler()
         setId('')
