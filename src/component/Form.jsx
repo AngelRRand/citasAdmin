@@ -70,6 +70,8 @@ const Form = ({ modal, modalHandler, pets, setPets, pet, setPet }) => {
             visible={modal}
             style={styles.modals}
         >
+
+            
             <SafeAreaView style={styles.modalContainer}>
                 <ScrollView>
 
